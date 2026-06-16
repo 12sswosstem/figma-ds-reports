@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Primitive Color 축소 리포트</title>
+<style>
+  :root{
+    --orange:#EB6100; --ink:#1D1D1D; --sub:#565656; --mut:#8F8F8F;
+    --line:#E9E9E9; --bg:#FEFEFE; --layer:#F4F4F4; --layer2:#EEEEEE;
+    --green:#0BA45D; --red:#F03823; --yellow:#E6AF00; --blue:#3B63FB;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,'Pretendard','Apple SD Gothic Neo',sans-serif;
+    color:var(--ink);background:var(--layer);line-height:1.65;padding:40px 20px}
+  .wrap{max-width:920px;margin:0 auto}
+  header{background:var(--bg);border:1px solid var(--line);border-radius:16px;padding:32px 36px;margin-bottom:24px}
+  .tag{display:inline-block;background:var(--orange);color:#fff;font-size:12px;font-weight:700;
+    padding:4px 10px;border-radius:999px;letter-spacing:.5px}
+  h1{font-size:28px;font-weight:800;margin:14px 0 6px}
+  .meta{color:var(--mut);font-size:13px}
+  section{background:var(--bg);border:1px solid var(--line);border-radius:16px;padding:28px 32px;margin-bottom:20px}
+  h2{font-size:19px;font-weight:800;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+  h2::before{content:"";width:5px;height:18px;background:var(--orange);border-radius:3px}
+  h3{font-size:15px;font-weight:700;margin:18px 0 8px;color:var(--sub)}
+  p{margin-bottom:10px;font-size:14.5px}
+  .nums{display:flex;gap:14px;flex-wrap:wrap;margin:8px 0 4px}
+  .card{flex:1;min-width:150px;background:var(--layer);border-radius:12px;padding:18px 20px;text-align:center}
+  .card .big{font-size:34px;font-weight:800;line-height:1.1}
+  .card .lbl{font-size:12.5px;color:var(--mut);margin-top:4px}
+  .card.down .big{color:var(--red)}
+  .card.keep .big{color:var(--green)}
+  .card.brand .big{color:var(--orange)}
+  table{width:100%;border-collapse:collapse;font-size:13.5px;margin-top:6px}
+  th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line)}
+  th{color:var(--sub);font-weight:700;font-size:12.5px;background:var(--layer)}
+  td.num{text-align:right;font-variant-numeric:tabular-nums}
+  .pill{display:inline-block;font-size:11.5px;font-weight:700;padding:2px 8px;border-radius:999px}
+  .pill.del{background:#FFEBE8;color:#B72818}
+  .pill.keep{background:#D7F7E1;color:#036E45}
+  .pill.hold{background:#FFF1D0;color:#865500}
+  .sw{display:inline-block;width:16px;height:16px;border-radius:4px;vertical-align:-3px;
+    margin-right:6px;border:1px solid rgba(0,0,0,.1)}
+  .swrow{display:flex;flex-wrap:wrap;gap:14px;margin-top:10px}
+  .swrow .item{display:flex;align-items:center;gap:8px;font-size:13px;background:var(--layer);
+    padding:7px 12px;border-radius:10px}
+  ul{margin:6px 0 10px 20px}
+  li{font-size:14px;margin-bottom:6px}
+  .note{background:#FFF8E8;border:1px solid #F3D98A;border-radius:10px;padding:12px 16px;font-size:13.5px;color:#5d4500}
+  code{background:var(--layer2);padding:1px 6px;border-radius:5px;font-size:12.5px}
+  .strike{text-decoration:line-through;color:var(--mut)}
+  footer{text-align:center;color:var(--mut);font-size:12px;padding:16px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <span class="tag">DESIGN SYSTEM · 변수 정리</span>
+  <h1>Primitive Color 축소 리포트</h1>
+  <div class="meta">작성일 2026-06-15 · 갱신 2026-06-16 · 대상 컬렉션 <code>Color_primitive</code> · <b>최종 정리 완료</b></div>
+</header>
+
+<section>
+  <h2>요약 (최종)</h2>
+  <div class="nums">
+    <div class="card"><div class="big">310</div><div class="lbl">기존 primitive</div></div>
+    <div class="card down"><div class="big">−205</div><div class="lbl">총 삭제</div></div>
+    <div class="card keep"><div class="big">105</div><div class="lbl">현재 남음 ✅</div></div>
+    <div class="card brand"><div class="big">12</div><div class="lbl">색상 family (20→12)</div></div>
+  </div>
+  <p>전체 310개 중 죽은 토큰 202개를 단계적으로 정리해 <b>최종 105개</b>가 되었습니다.
+  ① 이색 family 122개(1차) → ② 잔여 이색 6개 + 기능색 미사용 step 77개(컴포넌트 재배선 후) 삭제.
+  색상 family는 <b>20종 → 12종</b>으로 줄었습니다.</p>
+  <div class="note"><b>현재 실제 12 family (105개, 2026-06-16 파일 기준):</b>
+  neutralgray 19 · orange 11 · red 10 · green 10 · blue 10 · yellow 9 · purple 9 · magenta 7 · indigo 4 · turquoise 4 · alpha-black 7 · alpha-white 5.
+  <br>삭제된 이색 8종: brown · chartreuse · pink · celery · cinnamon · cyan · fuchsia · seafoam.
+  (아래 "family별 변경 내역"은 1차(이색) 삭제 단계 기록입니다.)</div>
+</section>
+
+<section>
+  <h2>변경 근거 (무엇을 보고 결정했나)</h2>
+  <ul>
+    <li><b>참조 그래프 분석</b> — 모든 변수의 mode 값을 훑어 <code>VARIABLE_ALIAS</code> 관계를 집계.
+      "어떤 변수도 가리키지 않는 primitive"를 죽은 토큰으로 판정 → <b>202/310</b>.</li>
+    <li><b>팔레트 출처 추정</b> — 16개 유채색 family가 모두 동일한 <code>100~1600</code> 16단계.
+      이는 Adobe Spectrum 전체 팔레트를 통째로 들여온 흔적. 실제 브랜드는 오렌지 1종.</li>
+    <li><b>안전 우선 삭제</b> — 8개 이색 family로 <b>대상을 화이트리스트 한정</b>하고,
+      그 안에서도 <b>참조가 0인 토큰만</b> 삭제. 참조 걸린 step은 자동 보존(=alias 안 깨짐).</li>
+    <li><b>단계적 정리</b> — 컴포넌트 484개가 primitive를 직접 참조 중이라, 기능색 ramp 축소는
+      재배선 이후가 더 안전 → 이번엔 보류.</li>
+  </ul>
+  <div class="note">판정 기준은 <b>변수→변수 참조</b>입니다. 캔버스 노드에 직접 칠해진 사용은 이번 범위 밖이며,
+  설령 있었더라도 삭제 시 색은 raw 값으로 남아 시각 변화는 없습니다(토큰 연결만 해제).</div>
+</section>
+
+<section>
+  <h2>family별 변경 내역</h2>
+  <table>
+    <thead><tr><th>family</th><th class="num">기존</th><th class="num">미참조</th><th class="num">삭제</th><th class="num">보존</th><th>처리</th></tr></thead>
+    <tbody>
+      <tr><td><span class="sw" style="background:#d6b17b"></span>brown</td><td class="num">16</td><td class="num">16</td><td class="num">16</td><td class="num">0</td><td><span class="pill del">전체 삭제</span></td></tr>
+      <tr><td><span class="sw" style="background:#a3c400"></span>chartreuse</td><td class="num">16</td><td class="num">16</td><td class="num">16</td><td class="num">0</td><td><span class="pill del">전체 삭제</span></td></tr>
+      <tr><td><span class="sw" style="background:#ff94db"></span>pink</td><td class="num">16</td><td class="num">16</td><td class="num">16</td><td class="num">0</td><td><span class="pill del">전체 삭제</span></td></tr>
+      <tr><td><span class="sw" style="background:#6ece2a"></span>celery</td><td class="num">16</td><td class="num">14</td><td class="num">16</td><td class="num">0</td><td><span class="pill del">전체 삭제</span></td></tr>
+      <tr><td><span class="sw" style="background:#e5aa88"></span>cinnamon</td><td class="num">16</td><td class="num">15</td><td class="num">16</td><td class="num">0</td><td><span class="pill del">전체 삭제</span></td></tr>
+      <tr><td><span class="sw" style="background:#5cc0ff"></span>cyan</td><td class="num">16</td><td class="num">15</td><td class="num">16</td><td class="num">0</td><td><span class="pill del">전체 삭제</span></td></tr>
+      <tr><td><span class="sw" style="background:#f393ff"></span>fuchsia</td><td class="num">16</td><td class="num">15</td><td class="num">16</td><td class="num">0</td><td><span class="pill del">전체 삭제</span></td></tr>
+      <tr><td><span class="sw" style="background:#10cfa9"></span>seafoam</td><td class="num">16</td><td class="num">15</td><td class="num">16</td><td class="num">0</td><td><span class="pill del">전체 삭제</span></td></tr>
+      <tr style="font-weight:800"><td>합계</td><td class="num">128</td><td class="num">122</td><td class="num">128</td><td class="num">0</td><td><span class="pill del">전체 삭제</span></td></tr>
+    </tbody>
+  </table>
+  <div class="note"><b>※ 2단계 삭제</b> — 위 5개 family는 <b>1차에서 일부 step(미참조 기준)을 먼저 삭제하고 6개를 임시 보존</b>했다가,
+  이후 <code>date_picker</code>를 <code>category/</code> 팔레트로 재배선해 참조가 풀리자 <b>나머지 6개도 삭제</b>했습니다.
+  → <b>현재 파일엔 이 8개 이색 family가 하나도 없습니다.</b></div>
+  <h3>임시 보존했던 6개 (현재는 삭제됨)</h3>
+  <p>1차 삭제 시점엔 <code>date_picker</code> 단일 컴포넌트가 이 6 step을 참조 중이라 임시 보존했습니다.
+  date_picker를 <code>category/</code>로 옮긴 뒤 참조가 끊겨 <b>최종 삭제</b>됐습니다.</p>
+</section>
+
+<section>
+  <h2>임시 보존됐던 색이 어디에 쓰였었나 (현재는 삭제됨)</h2>
+  <p><code>date_picker</code>(캘린더)가 <b>의료 이벤트 유형을 색으로 구분</b>하기 위해 이 이색 primitive들을
+  직접 참조하고 있었습니다(진료의사별 마크, 투약·검사·재방문 범례, 이번주 테두리 등). 이 때문에 1차에선 보존했지만,
+  아래 색들은 모두 <code>category/*</code>로 대체되어 <b>현재 파일에선 삭제된 상태</b>입니다.</p>
+  <table>
+    <thead><tr><th>잔여 색</th><th>참조한 컴포넌트 토큰</th><th>용도(추정)</th></tr></thead>
+    <tbody>
+      <tr><td><span class="sw" style="background:#0b97a4"></span>celery/1100</td><td><code>date_picker/legend/bg_return</code></td><td>재방문 범례 배경</td></tr>
+      <tr><td><span class="sw" style="background:#52a119"></span>celery/700</td><td><code>date_picker/legend/bg_return</code><br><code>date_picker/mark/mark_return</code></td><td>재방문 범례·마크</td></tr>
+      <tr><td><span class="sw" style="background:#b86d46"></span>cinnamon/800</td><td><code>date_picker/mark/mark_doctor-4</code></td><td>진료(의사 4) 마크</td></tr>
+      <tr><td><span class="sw" style="background:#1286cd"></span>cyan/800</td><td><code>date_picker/border/thisweek</code><br><code>date_picker/legend/bg_medication</code><br><code>date_picker/mark/mark_medication</code></td><td>이번주 테두리 · 투약 범례·마크</td></tr>
+      <tr><td><span class="sw" style="background:#b539c8"></span>fuchsia/900</td><td><code>date_picker/mark/mark_doctor-2</code></td><td>진료(의사 2) 마크</td></tr>
+      <tr><td><span class="sw" style="background:#0db595"></span>seafoam/600</td><td><code>date_picker/mark/mark_doctor-3</code></td><td>진료(의사 3) 마크</td></tr>
+    </tbody>
+  </table>
+  <div class="note"><b>인사이트 → 해결됨</b> — 이 6개는 "잔재"가 아니라 <b>범주형(categorical) 구분색 수요</b>였습니다.
+  그래서 <code>category/*</code>(10색×subtle/solid) 전용 그룹을 신설해 date_picker 이벤트색을 정식 편입했고,
+  그 결과 <b>이색 primitive 참조가 끊겨 6개 모두 삭제</b>됐습니다. (semantic 리포트의 category 섹션 참고)</div>
+</section>
+
+<section>
+  <h2>유지된 핵심 family</h2>
+  <p>브랜드·중립·기능색은 모두 유지했습니다. 이들이 새 semantic 레이어의 기반이 됩니다.</p>
+  <div class="swrow">
+    <div class="item"><span class="sw" style="background:#8f8f8f"></span>neutralgray <span style="color:var(--mut)">(0/19 미참조 · 전부 사용)</span></div>
+    <div class="item"><span class="sw" style="background:#eb6100"></span>orange <span style="color:var(--mut)">(브랜드)</span></div>
+    <div class="item"><span class="sw" style="background:#f03823"></span>red <span style="color:var(--mut)">(error)</span></div>
+    <div class="item"><span class="sw" style="background:#0ba45d"></span>green <span style="color:var(--mut)">(success)</span></div>
+    <div class="item"><span class="sw" style="background:#e6af00"></span>yellow <span style="color:var(--mut)">(warning)</span></div>
+    <div class="item"><span class="sw" style="background:#3b63fb"></span>blue <span style="color:var(--mut)">(info/link)</span></div>
+    <div class="item"><span class="sw" style="background:linear-gradient(45deg,#000,#0003)"></span>alpha black/white</div>
+  </div>
+  <h3>+ 범주형(category)용 확장 hue — 유지</h3>
+  <p>tag·캘린더 등 "여러 구분색" 용도로 4종을 추가 유지했습니다 (category 팔레트가 사용):</p>
+  <div class="swrow">
+    <div class="item"><span class="sw" style="background:#9a47e2"></span>purple (9)</div>
+    <div class="item"><span class="sw" style="background:#d92361"></span>magenta (7)</div>
+    <div class="item"><span class="sw" style="background:#7155fa"></span>indigo (4)</div>
+    <div class="item"><span class="sw" style="background:#0c9eab"></span>turquoise (4)</div>
+  </div>
+</section>
+
+<section>
+  <h2>완료 현황 (2026-06-16 갱신)</h2>
+  <ul>
+    <li>✅ <b>잔여 죽은 토큰 + 이색 6개 삭제 완료</b> — 컴포넌트 재배선 후 정리해 <b>310 → 105</b> 달성.</li>
+    <li>✅ <b>이색 8종 family 완전 제거</b> (brown·chartreuse·pink·celery·cinnamon·cyan·fuchsia·seafoam).</li>
+    <li>✅ date_picker 이벤트색은 <code>category/*</code> 팔레트로 정식 편입 → 보존했던 이색 6개도 삭제됨.</li>
+    <li>⏳ <b>스케일 통일</b>(유채색 100~1600 / neutralgray 0~1000 / orange 1~999 → 단일 체계)은
+      <b>아직 미적용</b> — family마다 단계 체계가 다른 상태가 남아 있음(향후 과제).</li>
+  </ul>
+  <div class="note">현재 남은 죽은 토큰은 14개(magenta 3·purple 5·alpha 4·orange 1·yellow 1)로, 유지 family 내 잔여 step입니다. 필요 시 추가 정리 가능.</div>
+</section>
+
+<footer>Generated for design-system variable cleanup · 2026-06-15 · 갱신 2026-06-16</footer>
+</div>
+</body>
+</html>

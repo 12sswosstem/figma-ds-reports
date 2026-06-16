@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AS-IS 변수 시스템 분석</title>
+<style>
+  :root{--orange:#EB6100;--ink:#1D1D1D;--sub:#565656;--mut:#8F8F8F;--line:#E9E9E9;--bg:#FEFEFE;--layer:#F4F4F4;--layer2:#EEEEEE;--green:#0BA45D;--red:#F03823;--yellow:#E6AF00;--blue:#3B63FB;}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,'Pretendard','Apple SD Gothic Neo',sans-serif;color:var(--ink);background:var(--layer);line-height:1.65;padding:40px 20px}
+  .wrap{max-width:1000px;margin:0 auto}
+  header{background:var(--bg);border:1px solid var(--line);border-radius:16px;padding:32px 36px;margin-bottom:24px}
+  .tag{display:inline-block;background:var(--ink);color:#fff;font-size:12px;font-weight:700;padding:4px 10px;border-radius:999px;letter-spacing:.5px}
+  h1{font-size:28px;font-weight:800;margin:14px 0 6px}
+  .meta{color:var(--mut);font-size:13px}
+  section{background:var(--bg);border:1px solid var(--line);border-radius:16px;padding:28px 32px;margin-bottom:20px}
+  h2{font-size:20px;font-weight:800;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+  h2::before{content:"";width:5px;height:20px;background:var(--orange);border-radius:3px}
+  h3{font-size:15px;font-weight:700;margin:18px 0 8px;color:var(--sub)}
+  p{margin-bottom:10px;font-size:14.5px}
+  .nums{display:flex;gap:14px;flex-wrap:wrap;margin:8px 0}
+  .card{flex:1;min-width:130px;background:var(--layer);border-radius:12px;padding:18px 20px;text-align:center}
+  .card .big{font-size:30px;font-weight:800;line-height:1.1}
+  .card .lbl{font-size:12px;color:var(--mut);margin-top:4px}
+  .card.bad .big{color:var(--red)}
+  table{width:100%;border-collapse:collapse;font-size:13.5px;margin-top:6px}
+  th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{color:var(--sub);font-weight:700;font-size:12.5px;background:var(--layer)}
+  td.num{text-align:right;font-variant-numeric:tabular-nums}
+  .pill{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px}
+  .pill.hi{background:#FFE3DE;color:#B72818}.pill.mid{background:#FFF3CC;color:#865500}.pill.lo{background:#EAEAEA;color:#565656}
+  .bartrack{display:inline-block;width:90px;height:8px;border-radius:4px;background:var(--layer2);vertical-align:middle;margin-right:6px;overflow:hidden}
+  .bar{display:inline-block;height:8px;border-radius:4px}
+  .sw{display:inline-block;width:14px;height:14px;border-radius:3px;vertical-align:-2px;margin-right:5px;border:1px solid rgba(0,0,0,.1)}
+  ul{margin:6px 0 10px 20px}li{font-size:14px;margin-bottom:6px}
+  code{background:var(--layer2);padding:1px 6px;border-radius:5px;font-size:12px}
+  .note{background:#FFF8E8;border:1px solid #F3D98A;border-radius:10px;padding:12px 16px;font-size:13.5px;color:#5d4500;margin-top:10px}
+  .bad{background:#FDECEA;border:1px solid #F3B7AE;border-radius:10px;padding:12px 16px;font-size:13.5px;color:#9c2113;margin-top:10px}
+  footer{text-align:center;color:var(--mut);font-size:12px;padding:16px}
+</style></head>
+<body><div class="wrap">
+
+<header>
+  <span class="tag">AS-IS 진단</span>
+  <h1>디자인시스템 변수 시스템 분석 (현황)</h1>
+  <div class="meta">작성일 2026-06-16 · 대상: 현재(as-is) 파일 · 색상 변수 3-tier 중심</div>
+</header>
+
+<section>
+  <h2>한눈에</h2>
+  <div class="nums">
+    <div class="card bad"><div class="big">310</div><div class="lbl">Primitive (과다)</div></div>
+    <div class="card bad"><div class="big">54</div><div class="lbl">Semantic (빈약)</div></div>
+    <div class="card"><div class="big">590</div><div class="lbl">Component</div></div>
+    <div class="card bad"><div class="big">70%</div><div class="lbl">primitive 직접참조</div></div>
+  </div>
+  <div class="bad"><b>핵심 진단 — "역피라미드 + 끊긴 중간층".</b> 가장 두꺼워야 할 semantic(54)이 가장 얇고 절반이 미사용,
+  반대로 primitive(310)는 비대하며 65%가 죽은 토큰. 그 결과 component(590)의 70%가 semantic을 건너뛰고 primitive를 직접 집어,
+  같은 상태(hover·selected)인데 컴포넌트마다 색이 달라집니다.</div>
+</section>
+
+<section>
+  <h2>컬렉션 구조</h2>
+  <table>
+    <thead><tr><th>컬렉션</th><th class="num">변수</th><th>모드</th><th>비고</th></tr></thead>
+    <tbody>
+      <tr><td><b>Color_primitive</b></td><td class="num">310</td><td>light/dark</td><td>원시 색 — 16 hue. 테마가 primitive에 박힘</td></tr>
+      <tr><td><b>Color_semantic</b></td><td class="num">54</td><td>light/dark/<b>service-1-test</b></td><td>용도 토큰 — 과소·절반 미사용. 테스트모드 잔류</td></tr>
+      <tr><td><b>Color_component</b></td><td class="num">590</td><td>light/dark/<b>dark-test</b></td><td>70% primitive 직접참조. 테스트모드 잔류</td></tr>
+      <tr><td>Number_primitive / sementic / component / custom</td><td class="num">33/185/395/5</td><td>—</td><td>숫자 토큰. <b>sementic</b> 오타</td></tr>
+      <tr style="background:#FDECEA"><td>pagination</td><td class="num">12</td><td>light/dark/online/dark_OneSW</td><td>Color_component/pagination(18)과 <b>중복 컬렉션</b></td></tr>
+      <tr style="background:#FDECEA"><td>--------------- (빈 컬렉션)</td><td class="num">0</td><td>Mode 1</td><td>구분선용 쓰레기</td></tr>
+      <tr><td>Theme / button-bg-mode / radius</td><td class="num">2/1/1</td><td>—</td><td>단일목적 소형 컬렉션</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section>
+  <h2>① Primitive (310) — 어떻게·왜 / 문제</h2>
+  <p><b>어떻게 썼나</b> — Adobe Spectrum 팔레트를 <b>16개 hue family</b> 통째로 들여오고, 각 hue를 <code>100~1600</code> 16단계로 깔았습니다.
+  brand는 <code>orange</code>, 중립은 <code>neutral gray</code>를 따로 둠. light/dark 두 모드로 색을 반전시켜 둠.</p>
+  <p><b>왜 문제인가</b> — 실제 브랜드는 오렌지 1종인데 16색을 다 들고 있어 <b>대부분 안 쓰입니다.</b></p>
+  <table>
+    <thead><tr><th>family</th><th class="num">총</th><th>죽음%</th><th>상태</th></tr></thead>
+    <tbody>
+      <tr><td><span class="sw" style="background:#8b6d42"></span>brown / <span class="sw" style="background:#a3c400"></span>chartreuse / <span class="sw" style="background:#ff94db"></span>pink</td><td class="num">각 16</td><td><div class="bartrack"><span class="bar" style="width:90px;background:var(--red)"></span></div>100%</td><td>★ 통째 미사용</td></tr>
+      <tr><td>celery·cinnamon·cyan·fuchsia·seafoam</td><td class="num">각 16</td><td><div class="bartrack"><span class="bar" style="width:85px;background:var(--red)"></span></div>~94%</td><td>거의 미사용(이색)</td></tr>
+      <tr><td>indigo(12) magenta(9) purple(6) turquoise(10) red(8) blue(7) yellow(7) green(11)</td><td class="num">16</td><td><div class="bartrack"><span class="bar" style="width:50px;background:var(--yellow)"></span></div>40~75%</td><td>일부만 사용</td></tr>
+      <tr><td><span class="sw" style="background:#8f8f8f"></span>neutral gray</td><td class="num">19</td><td><div class="bartrack"><span class="bar" style="width:0;background:var(--green)"></span></div>0%</td><td>핵심 — 전부 사용</td></tr>
+      <tr><td><span class="sw" style="background:#EB6100"></span>orange (brand)</td><td class="num">17</td><td><div class="bartrack"><span class="bar" style="width:5px;background:var(--green)"></span></div>6%</td><td>거의 사용</td></tr>
+    </tbody>
+  </table>
+  <div class="bad">죽은 토큰 <b>202/310 (65%)</b>. + 스케일 불일치(유채색 100~1600 / gray 0~1000 / orange 1~999 — family마다 체계가 다름) + 테마가 primitive에 박혀 "절대 팔레트"가 아님.</div>
+</section>
+
+<section>
+  <h2>② Semantic (54) — 어떻게·왜 / 문제</h2>
+  <p><b>어떻게 썼나</b> — alert(strong/weak), border, brand, common(alpha/bg/focus), elevation, text(fg) 그룹으로 구성.
+  primitive를 alias해서 용도색을 정의하려 했습니다.</p>
+  <p><b>왜 문제인가</b> — 양이 너무 적고(54), <b>절반 이상이 실제로 안 쓰입니다.</b></p>
+  <div class="nums">
+    <div class="card"><div class="big">54</div><div class="lbl">전체</div></div>
+    <div class="card"><div class="big" style="color:var(--green)">22</div><div class="lbl">사용</div></div>
+    <div class="card bad"><div class="big">32</div><div class="lbl">미사용 (59%)</div></div>
+  </div>
+  <table>
+    <thead><tr><th>그룹</th><th>구성</th><th>사용</th><th>문제</th></tr></thead>
+    <tbody>
+      <tr><td>alert</td><td>strong 10 + weak 10</td><td>5 / 20</td><td><b>weak 10개 전부 미사용</b>, custom_1/2/3 변형 bloat</td></tr>
+      <tr><td>common/alpha</td><td>hover·pressed·dim·shadow·default ×6</td><td><span class="pill hi">0 / 6</span></td><td>★ <b>공유 상태토큰이 있는데 0% 사용</b> → 상태 불일치 근본원인</td></tr>
+      <tr><td>common/bg</td><td>base·layer1~3 ×4</td><td><span class="pill hi">0 / 4</span></td><td>배경토큰 0% 사용 → 컴포넌트가 primitive gray 직접 사용</td></tr>
+      <tr><td>border</td><td>(active)·(diabled)·inverse?? ×3</td><td>1 / 3</td><td>오타·'??' 이름, 거의 미사용</td></tr>
+      <tr><td>brand</td><td>brand-A_* ×8</td><td>7 / 8</td><td>morelighter/light 2 등 비체계 네이밍</td></tr>
+      <tr><td>elevation</td><td>shadow-1~3·border ×4</td><td>0 / 4</td><td>raw 하드코딩, 미사용</td></tr>
+      <tr><td>text(fg)</td><td>primary/secondary/placeholder… ×8</td><td>8 / 8</td><td>유일하게 잘 쓰임 (오타 diabled)</td></tr>
+    </tbody>
+  </table>
+  <div class="bad"><b>분류축 혼재</b> — alert(의미)·border(역할)·brand(의미)·common(상태+배경)·elevation(효과)·text(역할)가 한 층에 섞여,
+  "alert와 border가 나란히" 있는 이상한 구조. + <b>네이밍 카오스</b>: 이모지(👆👌🚧📁🛡️)·오타(diabled, sementic)·WIP마커(🚧)·'??'·공백(brand-A_light 2)·중복((default) vs default).</div>
+</section>
+
+<section>
+  <h2>③ Component (590) — 어떻게·왜 / 문제</h2>
+  <p><b>어떻게 썼나</b> — 컴포넌트별로 bg/border/fgtext/icon 등 색 토큰을 정의. 그런데 semantic을 거치지 않고
+  <b>대부분 primitive(또는 구 semantic)를 직접 참조</b>합니다.</p>
+  <div class="nums">
+    <div class="card bad"><div class="big">415</div><div class="lbl">primitive 직접 (70%)</div></div>
+    <div class="card"><div class="big">129</div><div class="lbl">semantic 경유 (22%)</div></div>
+    <div class="card"><div class="big">44</div><div class="lbl">raw 하드코딩</div></div>
+    <div class="card bad"><div class="big">8</div><div class="lbl">semantic 0% 컴포넌트</div></div>
+  </div>
+  <h3>semantic을 전혀 안 쓰는 컴포넌트 (완전 primitive 의존)</h3>
+  <p><code>notification</code>(27) · <code>pagination</code>(18) · <code>popover</code>(12) · <code>popup</code>(11) · <code>tooltip</code>(11) · <code>slider</code>(14) · <code>value stepper</code> 등</p>
+  <div class="bad"><b>상태색 불일치</b> — 공유 state 토큰을 안 쓰니 컴포넌트마다 hover/selected를 따로 정의 →
+  chip selected ≠ tab selected ≠ button selected. + junk 루트토큰 6개(String-1/brand-accent/icon/more/text/badge), dark-test 모드, pagination 중복 컬렉션, 이름 공백/이모지 잔재.</div>
+</section>
+
+<section>
+  <h2>문제 종합 (심각도순)</h2>
+  <table>
+    <thead><tr><th>계층</th><th>문제</th><th>심각도</th><th>근거</th></tr></thead>
+    <tbody>
+      <tr><td>구조</td><td>역피라미드 — primitive 비대·semantic 빈약·component가 primitive 직접 의존</td><td><span class="pill hi">높음</span></td><td>310/54/590</td></tr>
+      <tr><td>Semantic</td><td>공유 상태토큰(hover/pressed/dim) 존재하나 0% 사용 → 상태 불일치</td><td><span class="pill hi">높음</span></td><td>0/6 사용</td></tr>
+      <tr><td>Component</td><td>semantic 우회, primitive 직접참조</td><td><span class="pill hi">높음</span></td><td>415/590 (70%)</td></tr>
+      <tr><td>Semantic</td><td>과소 + 59% 미사용, 분류축 혼재(alert·border 혼용)</td><td><span class="pill hi">높음</span></td><td>32/54 미사용</td></tr>
+      <tr><td>Primitive</td><td>16 hue 과다, 65% 죽은 토큰</td><td><span class="pill hi">높음</span></td><td>202/310</td></tr>
+      <tr><td>Primitive</td><td>스케일 불일치 / 테마가 primitive에 박힘</td><td><span class="pill mid">중간</span></td><td>3종 스케일</td></tr>
+      <tr><td>Semantic</td><td>네이밍 카오스(이모지·오타·WIP·중복)</td><td><span class="pill mid">중간</span></td><td>다수</td></tr>
+      <tr><td>기타</td><td>junk 토큰·빈 컬렉션·test 모드·중복 컬렉션 잔재</td><td><span class="pill lo">낮음</span></td><td>junk 6 등</td></tr>
+    </tbody>
+  </table>
+  <div class="note"><b>개선 방향(요약)</b> — ① primitive를 6 core hue + 단일 스케일로 축소 ② semantic을 역할×의미×상태로 두껍게 재구성(특히 공유 <code>state/*</code> 활성화)
+  ③ component를 semantic 참조로 재배선. <i>(상세 개선안은 별도 "개선안" 파일/리포트 참고)</i></div>
+</section>
+
+<footer>AS-IS 변수 시스템 분석 · 2026-06-16 · 동봉 엑셀: asis-variable-analysis.xlsx</footer>
+</div></body></html>

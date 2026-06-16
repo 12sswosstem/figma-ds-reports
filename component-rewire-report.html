@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Component 재배선 리포트</title>
+<style>
+  :root{
+    --orange:#EB6100; --ink:#1D1D1D; --sub:#565656; --mut:#8F8F8F;
+    --line:#E9E9E9; --bg:#FEFEFE; --layer:#F4F4F4; --layer2:#EEEEEE;
+    --green:#0BA45D; --red:#F03823; --yellow:#E6AF00; --blue:#3B63FB;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,'Pretendard','Apple SD Gothic Neo',sans-serif;
+    color:var(--ink);background:var(--layer);line-height:1.65;padding:40px 20px}
+  .wrap{max-width:960px;margin:0 auto}
+  header{background:var(--bg);border:1px solid var(--line);border-radius:16px;padding:32px 36px;margin-bottom:24px}
+  .tag{display:inline-block;background:var(--orange);color:#fff;font-size:12px;font-weight:700;padding:4px 10px;border-radius:999px;letter-spacing:.5px}
+  h1{font-size:28px;font-weight:800;margin:14px 0 6px}
+  .meta{color:var(--mut);font-size:13px}
+  section{background:var(--bg);border:1px solid var(--line);border-radius:16px;padding:28px 32px;margin-bottom:20px}
+  h2{font-size:19px;font-weight:800;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+  h2::before{content:"";width:5px;height:18px;background:var(--orange);border-radius:3px}
+  h3{font-size:15px;font-weight:700;margin:18px 0 8px;color:var(--sub)}
+  p{margin-bottom:10px;font-size:14.5px}
+  .nums{display:flex;gap:14px;flex-wrap:wrap;margin:8px 0 4px}
+  .card{flex:1;min-width:140px;background:var(--layer);border-radius:12px;padding:18px 20px;text-align:center}
+  .card .big{font-size:32px;font-weight:800;line-height:1.1}
+  .card .lbl{font-size:12.5px;color:var(--mut);margin-top:4px}
+  .card.up .big{color:var(--green)} .card.warn .big{color:var(--red)} .card.brand .big{color:var(--orange)}
+  table{width:100%;border-collapse:collapse;font-size:13.5px;margin-top:6px}
+  th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:middle}
+  th{color:var(--sub);font-weight:700;font-size:12.5px;background:var(--layer)}
+  td.num{text-align:right;font-variant-numeric:tabular-nums}
+  code{background:var(--layer2);padding:1px 6px;border-radius:5px;font-size:12px}
+  .bar{display:inline-block;height:8px;border-radius:4px;background:var(--green);vertical-align:middle}
+  .bartrack{display:inline-block;width:120px;height:8px;border-radius:4px;background:var(--layer2);vertical-align:middle;margin-right:8px;overflow:hidden}
+  .ba{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:13px;background:var(--layer);padding:9px 12px;border-radius:10px;margin:6px 0}
+  .ba .from{color:var(--mut);text-decoration:line-through}
+  .ba .to{color:var(--green);font-weight:700}
+  .arrow{color:var(--orange);font-weight:800}
+  .note{background:#FFF8E8;border:1px solid #F3D98A;border-radius:10px;padding:12px 16px;font-size:13.5px;color:#5d4500;margin-top:10px}
+  .good{background:#EAF8F0;border:1px solid #9FE0BE;border-radius:10px;padding:12px 16px;font-size:13.5px;color:#04603a;margin-top:10px}
+  ul{margin:6px 0 10px 20px} li{font-size:14px;margin-bottom:6px}
+  .grid2{display:flex;gap:14px;flex-wrap:wrap}
+  .grid2 .col{flex:1;min-width:260px;border-radius:12px;padding:16px;border:1px solid var(--line)}
+  footer{text-align:center;color:var(--mut);font-size:12px;padding:16px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <span class="tag">DESIGN SYSTEM · 변수 정리</span>
+  <h1>Component 컬러 재배선 리포트</h1>
+  <div class="meta">작성일 2026-06-15 · 대상 <code>Color_component</code> · 재배선 전 vs 현재</div>
+</header>
+
+<section>
+  <h2>요약</h2>
+  <div class="nums">
+    <div class="card"><div class="big">590</div><div class="lbl">컴포넌트 색 토큰</div></div>
+    <div class="card up"><div class="big">~88%</div><div class="lbl">semantic_v2 연결</div></div>
+    <div class="card brand"><div class="big">0</div><div class="lbl">구 semantic 참조</div></div>
+    <div class="card"><div class="big">14</div><div class="lbl">100% 완료 컴포넌트</div></div>
+  </div>
+  <p>재배선 전에는 컴포넌트 색의 <b>82%(484개)가 semantic을 건너뛰고 primitive를 직접 참조</b>하거나 구 semantic을 가리켰습니다.
+  이를 <b>새 <code>Color_semantic_v2</code> 참조로 교체</b>해, 컴포넌트가 공유 토큰 체계를 따르도록 정리했습니다.</p>
+</section>
+
+<section>
+  <h2>무엇이 문제였나 (재배선 전)</h2>
+  <div class="grid2">
+    <div class="col" style="border-color:#F3B7AE">
+      <h3 style="color:var(--red);margin-top:0">❌ Before</h3>
+      <ul>
+        <li><b>semantic 건너뜀</b> — 484/590이 primitive 직접참조</li>
+        <li><b>상태색 제각각</b> — 컴포넌트마다 hover/selected를 따로 정의 → 같은 상태인데 색이 다름</li>
+        <li><b>구 semantic 혼용</b> — <code>brand-A_*</code>, <code>alert/strong/*</code>, <code>textfg/diabled</code>(오타) 등 섞여 참조</li>
+        <li><b>중복·잔재</b> — 색태그·이벤트색이 이색 primitive 직접 사용, junk 토큰</li>
+      </ul>
+    </div>
+    <div class="col" style="border-color:#9FE0BE">
+      <h3 style="color:var(--green);margin-top:0">✅ After</h3>
+      <ul>
+        <li><b>semantic_v2 경유</b> — 컴포넌트 → semantic_v2 → primitive</li>
+        <li><b>공유 <code>state/*</code></b> — 모든 컴포넌트가 같은 상태 토큰 참조</li>
+        <li><b>구 semantic 참조 0</b> — 전부 정리, 구 컬렉션 삭제</li>
+        <li><b>범주형 <code>category/*</code></b> — 색태그·이벤트색 통합</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>before → after 예시 (button)</h2>
+  <div class="ba"><code>bg/brand-primary</code><span class="arrow">→</span><span class="from">brand/brand-A_default</span><span class="arrow">→</span><span class="to">bg/brand</span></div>
+  <div class="ba"><code>fgtext/neutral-secondary</code><span class="arrow">→</span><span class="from">neutralgray/700</span><span class="arrow">→</span><span class="to">text/secondary</span></div>
+  <div class="ba"><code>icon/neutral</code><span class="arrow">→</span><span class="from">neutralgray/500</span><span class="arrow">→</span><span class="to">icon/tertiary</span></div>
+  <div class="ba"><code>fgtext/disabled</code><span class="arrow">→</span><span class="from">textfg/diabled (오타)</span><span class="arrow">→</span><span class="to">text/disabled</span></div>
+  <div class="ba"><code>bg/destructive-primary</code><span class="arrow">→</span><span class="from">alert/strong/error_danger</span><span class="arrow">→</span><span class="to">status/error/bg-strong</span></div>
+</section>
+
+<section>
+  <h2>어떻게 했나 (방법론)</h2>
+  <ul>
+    <li><b>1. 파일럿(button)</b> — 한 컴포넌트로 매핑 규칙을 세우고 검증.</li>
+    <li><b>2. 자동 매퍼</b> — 규칙 기반으로 413개 일괄 재배선:
+      <ul>
+        <li>회색조 step → 역할별 토큰 (gray/0→<code>bg/base</code>, gray/700 텍스트→<code>text/secondary</code> …)</li>
+        <li>구 semantic 이름 → 대응 (<code>brand-A_*</code>→brand, <code>alert/*</code>→status, <code>textfg/*</code>→text, <code>focusring</code>→<code>state/focus-ring</code>)</li>
+        <li>상태 키워드(disabled/hover/selected) → <code>state/*</code></li>
+      </ul>
+    </li>
+    <li><b>3. 범주형 팔레트</b> — <code>category/*</code> 10색 신설 → tag·date_picker 이벤트색 정리.</li>
+    <li><b>4. 청소</b> — 잔여 모호 토큰 2차 정리, 구 semantic 삭제.</li>
+  </ul>
+  <div class="note"><b>테마 구조</b> — 컴포넌트는 semantic_v2를 alias하고, 다크/라이트는 <b>semantic_v2 모드</b>가 담당합니다.
+  컴포넌트의 모든 모드를 같은 semantic 토큰에 연결해, 테마 전환점을 한 곳으로 모았습니다.</div>
+</section>
+
+<section>
+  <h2>컴포넌트별 진행률</h2>
+  <table>
+    <thead><tr><th>컴포넌트</th><th>진행</th><th class="num">v2/전체</th></tr></thead>
+    <tbody id="rows"></tbody>
+  </table>
+  <script>
+    const data = [
+      ["card",4,4],["coachmark",4,4],["date_picker",42,42],["divider",3,3],["expandablelist",9,9],
+      ["fab",5,5],["modal",9,9],["popup",11,11],["rating",6,6],["table",13,13],["tooltip",11,11],["valuestepper",5,5],
+      ["inputcommon",20,21],["navigation_gnb_snb",20,21],["notification",26,27],["textinput",15,16],
+      ["menu",26,28],["progresscirclebar",13,14],["toolbar",20,22],["tag",21,22],
+      ["button",38,42],["breadcrumb",8,9],["carousel",8,9],["chip",15,17],["dropdown",18,20],
+      ["list",18,21],["slider",12,14],["popover",10,12],["segmented_control",15,18],["HMI",18,23],
+      ["pagination",14,18],["selectioncontrol",17,22],["fileupload",9,12],["tab",18,26],["common",8,18],
+    ];
+    const tb = document.getElementById("rows");
+    for (const [n,v,t] of data){
+      const pct = Math.round(v/t*100);
+      const c = pct===100?"var(--green)":pct>=80?"#5db41f":pct>=60?"var(--yellow)":"var(--orange)";
+      tb.insertAdjacentHTML("beforeend",
+        `<tr><td>${n}${pct===100?' ✅':''}</td><td><span class="bartrack"><span class="bar" style="width:${pct*1.2}px;background:${c}"></span></span>${pct}%</td><td class="num">${v}/${t}</td></tr>`);
+    }
+  </script>
+  <p style="margin-top:8px;color:var(--mut);font-size:13px">※ junk 1토큰 그룹(String-1·brand-accent·icon·more·text)은 삭제됨. 미완 부분은 대부분 의도적 raw(투명·오버레이) 또는 모호 보류 토큰.</p>
+</section>
+
+<section>
+  <h2>category/ 팔레트 (신설)</h2>
+  <p>"여러 구분색이 필요한" tag·캘린더 이벤트용. 각 색 subtle(배경)+solid(강조). date_picker 이벤트색이 쓰던 이색 primitive 의존을 제거.</p>
+  <div class="ba" style="gap:6px">
+    <span style="display:inline-block;width:18px;height:18px;border-radius:4px;background:#F03823"></span>
+    <span style="display:inline-block;width:18px;height:18px;border-radius:4px;background:#EB6100"></span>
+    <span style="display:inline-block;width:18px;height:18px;border-radius:4px;background:#E6AF00"></span>
+    <span style="display:inline-block;width:18px;height:18px;border-radius:4px;background:#0BA45D"></span>
+    <span style="display:inline-block;width:18px;height:18px;border-radius:4px;background:#0c9eab"></span>
+    <span style="display:inline-block;width:18px;height:18px;border-radius:4px;background:#3B63FB"></span>
+    <span style="display:inline-block;width:18px;height:18px;border-radius:4px;background:#5424db"></span>
+    <span style="display:inline-block;width:18px;height:18px;border-radius:4px;background:#8628d9"></span>
+    <span style="display:inline-block;width:18px;height:18px;border-radius:4px;background:#ba1650"></span>
+    <span style="display:inline-block;width:18px;height:18px;border-radius:4px;background:#727272"></span>
+    <span style="margin-left:6px;color:var(--sub)">red·orange·yellow·green·teal·blue·indigo·purple·magenta·gray</span>
+  </div>
+</section>
+
+<section>
+  <h2>남은 것</h2>
+  <ul>
+    <li><b>raw ~39</b> — 투명·오버레이 하드코딩 (의도적 유지)</li>
+    <li><b>모호 prim ~29</b> — mid-gray nav 배경, 흰 border 등 케이스별 보류</li>
+    <li><b>중복 <code>pagination</code> 컬렉션</b> — Color_component/pagination과 중복 → 별도 정리 권장</li>
+  </ul>
+  <div class="good">핵심 재배선은 완료. 컴포넌트가 semantic_v2 기반으로 동작하며, 구 semantic 의존은 0입니다.</div>
+</section>
+
+<footer>Generated for design-system variable cleanup · 2026-06-15</footer>
+</div>
+</body>
+</html>
