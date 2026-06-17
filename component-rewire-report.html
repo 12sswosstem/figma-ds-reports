@@ -112,7 +112,7 @@
         <li>상태 키워드(disabled/hover/selected) → <code>state/*</code></li>
       </ul>
     </li>
-    <li><b>3. 범주형 팔레트</b> — <code>category/*</code> 10색 신설 → tag·date_picker 이벤트색 정리.</li>
+    <li><b>3. 범주형 팔레트</b> — <code>category/*</code> 신설 후 해체 → tag·date_picker가 primitive 직접참조(독립 관리).</li>
     <li><b>4. 청소</b> — 잔여 모호 토큰 2차 정리, 구 semantic 삭제.</li>
   </ul>
   <div class="note"><b>테마 구조</b> — 컴포넌트는 semantic_v2를 alias하고, 다크/라이트는 <b>semantic_v2 모드</b>가 담당합니다.
@@ -147,8 +147,9 @@
 </section>
 
 <section>
-  <h2>category/ 팔레트 (신설)</h2>
-  <p>"여러 구분색이 필요한" tag·캘린더 이벤트용. 각 색 subtle(배경)+solid(강조). date_picker 이벤트색이 쓰던 이색 primitive 의존을 제거.</p>
+  <h2>범주형 구분색 — category/ 신설했다가 해체 (2026-06-17)</h2>
+  <p>tag·date_picker 이벤트색은 처음 공유 <code>category/</code> 팔레트(10색)로 모았으나, <b>두 컴포넌트를 독립 관리</b>하기로 해서 해체했습니다.
+  현재는 각 컴포넌트가 <b>primitive를 직접 참조</b>합니다 (의미 없는 장식·구분색은 semantic 건너뜀 허용). 아래는 당시 10색:</p>
   <div class="ba" style="gap:6px">
     <span style="display:inline-block;width:18px;height:18px;border-radius:4px;background:#F03823"></span>
     <span style="display:inline-block;width:18px;height:18px;border-radius:4px;background:#EB6100"></span>

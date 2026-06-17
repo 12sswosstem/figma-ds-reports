@@ -57,25 +57,26 @@
 
 <header>
   <span class="tag">DESIGN SYSTEM · 변수 정리</span>
-  <h1>Primitive Color 축소 리포트</h1>
-  <div class="meta">작성일 2026-06-15 · 갱신 2026-06-16 · 대상 컬렉션 <code>Color_primitive</code> · <b>최종 정리 완료</b></div>
+  <h1>Primitive Color 정리·재구성 리포트</h1>
+  <div class="meta">작성일 2026-06-15 · 갱신 2026-06-16 · 대상 컬렉션 <code>Color_primitive</code> (단일 모드 <code>Hex</code>) · <b>재구성 완료</b></div>
 </header>
 
 <section>
-  <h2>요약 (최종)</h2>
+  <h2>요약 (현재 최신)</h2>
   <div class="nums">
     <div class="card"><div class="big">310</div><div class="lbl">기존 primitive</div></div>
-    <div class="card down"><div class="big">−205</div><div class="lbl">총 삭제</div></div>
-    <div class="card keep"><div class="big">105</div><div class="lbl">현재 남음 ✅</div></div>
-    <div class="card brand"><div class="big">12</div><div class="lbl">색상 family (20→12)</div></div>
+    <div class="card keep"><div class="big">141</div><div class="lbl">현재 ✅</div></div>
+    <div class="card brand"><div class="big">100~900</div><div class="lbl">유채색 균일 스케일</div></div>
+    <div class="card"><div class="big">15</div><div class="lbl">family</div></div>
   </div>
-  <p>전체 310개 중 죽은 토큰 202개를 단계적으로 정리해 <b>최종 105개</b>가 되었습니다.
-  ① 이색 family 122개(1차) → ② 잔여 이색 6개 + 기능색 미사용 step 77개(컴포넌트 재배선 후) 삭제.
-  색상 family는 <b>20종 → 12종</b>으로 줄었습니다.</p>
-  <div class="note"><b>현재 실제 12 family (105개, 2026-06-16 파일 기준):</b>
-  neutralgray 19 · orange 11 · red 10 · green 10 · blue 10 · yellow 9 · purple 9 · magenta 7 · indigo 4 · turquoise 4 · alpha-black 7 · alpha-white 5.
-  <br>삭제된 이색 8종: brown · chartreuse · pink · celery · cinnamon · cyan · fuchsia · seafoam.
-  (아래 "family별 변경 내역"은 1차(이색) 삭제 단계 기록입니다.)</div>
+  <p>310개를 정리(죽은 토큰 삭제)한 뒤, <b>모든 유채색을 균일한 100~900(9단계)으로 재구성</b>하고 일부 색을 복원해
+  현재 <b>141개</b>가 되었습니다. light/dark 반전 모드를 없애고 <b>단일 절대 팔레트</b>로 전환(테마는 semantic이 담당).</p>
+  <div class="note"><b>현재 실제 15 family (141개, 2026-06-16 파일 기준):</b><br>
+  ▸ 유채색 12종 × 100~900: <b>blue · green · red · yellow · orange · purple · magenta · indigo · turquoise · chartreuse · pink · cyan</b> (각 9단계)<br>
+  ▸ <b>neutralgray</b> 19단계 (텍스트·배경·보더용, 더 촘촘)<br>
+  ▸ <b>color/black · color/white</b> 각 7단계(0·5·10·20·30·40·60) — <b>불투명도(opacity)</b> 토큰 (이전 <code>alpha/*</code>에서 이름 변경)<br>
+  <span style="color:var(--mut)">※ chartreuse·pink·cyan는 1차에서 삭제됐다가 복원됨. brown·celery·cinnamon·fuchsia·seafoam은 삭제 유지.
+  아래 "family별 변경 내역"은 초기 정리 단계 기록이며, 이후 100~900 재구성·복원이 반영된 최신 상태는 이 박스 기준입니다.</span></div>
 </section>
 
 <section>
@@ -100,20 +101,20 @@
     <thead><tr><th>family</th><th class="num">기존</th><th class="num">미참조</th><th class="num">삭제</th><th class="num">보존</th><th>처리</th></tr></thead>
     <tbody>
       <tr><td><span class="sw" style="background:#d6b17b"></span>brown</td><td class="num">16</td><td class="num">16</td><td class="num">16</td><td class="num">0</td><td><span class="pill del">전체 삭제</span></td></tr>
-      <tr><td><span class="sw" style="background:#a3c400"></span>chartreuse</td><td class="num">16</td><td class="num">16</td><td class="num">16</td><td class="num">0</td><td><span class="pill del">전체 삭제</span></td></tr>
-      <tr><td><span class="sw" style="background:#ff94db"></span>pink</td><td class="num">16</td><td class="num">16</td><td class="num">16</td><td class="num">0</td><td><span class="pill del">전체 삭제</span></td></tr>
+      <tr><td><span class="sw" style="background:#a3c400"></span>chartreuse</td><td class="num">16</td><td class="num">16</td><td class="num">—</td><td class="num">9</td><td><span class="pill keep">삭제→복원 (100~900)</span></td></tr>
+      <tr><td><span class="sw" style="background:#ff94db"></span>pink</td><td class="num">16</td><td class="num">16</td><td class="num">—</td><td class="num">9</td><td><span class="pill keep">삭제→복원 (100~900)</span></td></tr>
       <tr><td><span class="sw" style="background:#6ece2a"></span>celery</td><td class="num">16</td><td class="num">14</td><td class="num">16</td><td class="num">0</td><td><span class="pill del">전체 삭제</span></td></tr>
       <tr><td><span class="sw" style="background:#e5aa88"></span>cinnamon</td><td class="num">16</td><td class="num">15</td><td class="num">16</td><td class="num">0</td><td><span class="pill del">전체 삭제</span></td></tr>
-      <tr><td><span class="sw" style="background:#5cc0ff"></span>cyan</td><td class="num">16</td><td class="num">15</td><td class="num">16</td><td class="num">0</td><td><span class="pill del">전체 삭제</span></td></tr>
+      <tr><td><span class="sw" style="background:#5cc0ff"></span>cyan</td><td class="num">16</td><td class="num">15</td><td class="num">—</td><td class="num">9</td><td><span class="pill keep">삭제→복원 (100~900)</span></td></tr>
       <tr><td><span class="sw" style="background:#f393ff"></span>fuchsia</td><td class="num">16</td><td class="num">15</td><td class="num">16</td><td class="num">0</td><td><span class="pill del">전체 삭제</span></td></tr>
       <tr><td><span class="sw" style="background:#10cfa9"></span>seafoam</td><td class="num">16</td><td class="num">15</td><td class="num">16</td><td class="num">0</td><td><span class="pill del">전체 삭제</span></td></tr>
-      <tr style="font-weight:800"><td>합계</td><td class="num">128</td><td class="num">122</td><td class="num">128</td><td class="num">0</td><td><span class="pill del">전체 삭제</span></td></tr>
+      <tr style="font-weight:800"><td>합계 (8종)</td><td class="num">128</td><td class="num">122</td><td class="num">—</td><td class="num">—</td><td>5종 삭제 유지 · <b style="color:var(--green)">3종(chartreuse·pink·cyan) 복원</b></td></tr>
     </tbody>
   </table>
-  <div class="note"><b>※ 2단계 삭제</b> — 위 5개 family는 <b>1차에서 일부 step(미참조 기준)을 먼저 삭제하고 6개를 임시 보존</b>했다가,
-  이후 <code>date_picker</code>를 <code>category/</code> 팔레트로 재배선해 참조가 풀리자 <b>나머지 6개도 삭제</b>했습니다.
-  → <b>현재 파일엔 이 8개 이색 family가 하나도 없습니다.</b></div>
-  <h3>임시 보존했던 6개 (현재는 삭제됨)</h3>
+  <div class="note"><b>※ 이 표는 "초기 삭제" 단계 기록입니다.</b> 당시 8종을 모두 삭제(date_picker가 쓰던 6 step은 임시 보존했다가 <code>category/</code> 재배선 후 삭제)했습니다.
+  <br><b>이후 chartreuse·pink·cyan 3종은 100~900으로 복원</b>했습니다 (범주형 색 등 활용). →
+  <b>현재 파일: brown·celery·cinnamon·fuchsia·seafoam 5종만 삭제 유지, chartreuse·pink·cyan 3종은 존재.</b></div>
+  <h3>당시 date_picker가 쓰던 이색 step (참고 — 이후 category/로 대체)</h3>
   <p>1차 삭제 시점엔 <code>date_picker</code> 단일 컴포넌트가 이 6 step을 참조 중이라 임시 보존했습니다.
   date_picker를 <code>category/</code>로 옮긴 뒤 참조가 끊겨 <b>최종 삭제</b>됐습니다.</p>
 </section>
@@ -149,28 +150,32 @@
     <div class="item"><span class="sw" style="background:#0ba45d"></span>green <span style="color:var(--mut)">(success)</span></div>
     <div class="item"><span class="sw" style="background:#e6af00"></span>yellow <span style="color:var(--mut)">(warning)</span></div>
     <div class="item"><span class="sw" style="background:#3b63fb"></span>blue <span style="color:var(--mut)">(info/link)</span></div>
-    <div class="item"><span class="sw" style="background:linear-gradient(45deg,#000,#0003)"></span>alpha black/white</div>
+    <div class="item"><span class="sw" style="background:linear-gradient(45deg,#000,#0003)"></span>color/black · color/white <span style="color:var(--mut)">(불투명도)</span></div>
   </div>
-  <h3>+ 범주형(category)용 확장 hue — 유지</h3>
-  <p>tag·캘린더 등 "여러 구분색" 용도로 4종을 추가 유지했습니다 (category 팔레트가 사용):</p>
+  <h3>+ 범주형(category)용 hue — 유지·복원 (각 100~900)</h3>
+  <p>tag·캘린더 등 "여러 구분색" 용도로 사용 (category 팔레트가 참조). 전부 9단계로 통일:</p>
   <div class="swrow">
-    <div class="item"><span class="sw" style="background:#9a47e2"></span>purple (9)</div>
-    <div class="item"><span class="sw" style="background:#d92361"></span>magenta (7)</div>
-    <div class="item"><span class="sw" style="background:#7155fa"></span>indigo (4)</div>
-    <div class="item"><span class="sw" style="background:#0c9eab"></span>turquoise (4)</div>
+    <div class="item"><span class="sw" style="background:#9a47e2"></span>purple</div>
+    <div class="item"><span class="sw" style="background:#d92361"></span>magenta</div>
+    <div class="item"><span class="sw" style="background:#7155fa"></span>indigo</div>
+    <div class="item"><span class="sw" style="background:#0c9eab"></span>turquoise</div>
+    <div class="item"><span class="sw" style="background:#a3c400"></span>chartreuse <span style="color:var(--mut)">(복원)</span></div>
+    <div class="item"><span class="sw" style="background:#ff94db"></span>pink <span style="color:var(--mut)">(복원)</span></div>
+    <div class="item"><span class="sw" style="background:#5cc0ff"></span>cyan <span style="color:var(--mut)">(복원)</span></div>
   </div>
 </section>
 
 <section>
-  <h2>완료 현황 (2026-06-16 갱신)</h2>
+  <h2>완료 현황 (2026-06-16 최신)</h2>
   <ul>
-    <li>✅ <b>잔여 죽은 토큰 + 이색 6개 삭제 완료</b> — 컴포넌트 재배선 후 정리해 <b>310 → 105</b> 달성.</li>
-    <li>✅ <b>이색 8종 family 완전 제거</b> (brown·chartreuse·pink·celery·cinnamon·cyan·fuchsia·seafoam).</li>
-    <li>✅ date_picker 이벤트색은 <code>category/*</code> 팔레트로 정식 편입 → 보존했던 이색 6개도 삭제됨.</li>
-    <li>⏳ <b>스케일 통일</b>(유채색 100~1600 / neutralgray 0~1000 / orange 1~999 → 단일 체계)은
-      <b>아직 미적용</b> — family마다 단계 체계가 다른 상태가 남아 있음(향후 과제).</li>
+    <li>✅ <b>유채색 100~900 균일 스케일 통일</b> — 12종 모두 100·200·…·900 (9단계). 패널 순서도 정렬.</li>
+    <li>✅ <b>chartreuse·pink·cyan 복원</b> (범주형 등 활용). brown·celery·cinnamon·fuchsia·seafoam은 삭제 유지.</li>
+    <li>✅ <b>단일 모드(Hex) 전환</b> — primitive의 light/dark 반전 모드 제거 → 절대 팔레트. 다크 테마는 semantic이 담당.</li>
+    <li>✅ <b><code>alpha/*</code> → <code>color/black</code>·<code>color/white</code></b> 이름 변경 + 단계 통일(각 0·5·10·20·30·40·60). 숫자=불투명도%.</li>
+    <li>✅ date_picker 이벤트색은 <code>category/*</code> 팔레트로 편입 (semantic).</li>
   </ul>
-  <div class="note">현재 남은 죽은 토큰은 14개(magenta 3·purple 5·alpha 4·orange 1·yellow 1)로, 유지 family 내 잔여 step입니다. 필요 시 추가 정리 가능.</div>
+  <div class="note">현재 141개 = 유채색 108(12×9) + neutralgray 19 + color/black 7 + color/white 7.
+  복원한 chartreuse·pink·cyan은 아직 참조 0(향후 사용 대비 보유). 불투명도 토큰의 숫자는 명도가 아니라 opacity%임에 유의.</div>
 </section>
 
 <footer>Generated for design-system variable cleanup · 2026-06-15 · 갱신 2026-06-16</footer>
